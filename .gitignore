@@ -1,0 +1,32 @@
+# ============================================
+#  SmartHome IoT - 忽略规则
+# ============================================
+
+# ---------- 构建产物 ----------
+backend/target/
+*.class
+
+# ---------- 启动脚本生成的临时文件 ----------
+backend/launch-backend.bat
+
+# ---------- IDE ----------
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.project
+.classpath
+
+# ---------- 本地覆盖配置（数据库密码请走 DB_PASSWORD 环境变量）----------
+application-local.yml
+*.local.yml
+
+# ---------- 日志 ----------
+*.log
+
+# ---------- 系统文件 ----------
+Thumbs.db
+.DS_Store
+desktop.ini

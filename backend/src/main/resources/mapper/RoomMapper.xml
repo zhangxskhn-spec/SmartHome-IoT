@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iot.smarthome.mapper.RoomMapper">
+    <resultMap id="Base" type="com.iot.smarthome.entity.Room">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="icon" property="icon"/>
+        <result column="sort_order" property="sortOrder"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    <select id="selectAll" resultMap="Base">SELECT * FROM room ORDER BY sort_order</select>
+    <select id="selectById" resultMap="Base">SELECT * FROM room WHERE id=#{id}</select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO room(name,icon,sort_order) VALUES(#{name},#{icon},#{sortOrder})
+    </insert>
+    <update id="update">UPDATE room SET name=#{name},icon=#{icon},sort_order=#{sortOrder} WHERE id=#{id}</update>
+    <delete id="deleteById">DELETE FROM room WHERE id=#{id}</delete>
+</mapper>

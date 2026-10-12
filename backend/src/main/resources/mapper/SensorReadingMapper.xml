@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iot.smarthome.mapper.SensorReadingMapper">
+    <resultMap id="Base" type="com.iot.smarthome.entity.SensorReading">
+        <id column="id" property="id"/>
+        <result column="device_id" property="deviceId"/>
+        <result column="temperature" property="temperature"/>
+        <result column="humidity" property="humidity"/>
+        <result column="light_level" property="lightLevel"/>
+        <result column="pm25" property="pm25"/>
+        <result column="co2" property="co2"/>
+        <result column="noise" property="noise"/>
+        <result column="record_time" property="recordTime"/>
+    </resultMap>
+    <select id="selectLatest" resultMap="Base">
+        SELECT * FROM sensor_reading WHERE device_id=#{deviceId} ORDER BY record_time DESC LIMIT #{limit}
+    </select>
+    <select id="selectLatestOne" resultMap="Base">
+        SELECT * FROM sensor_reading WHERE device_id=#{deviceId} ORDER BY record_time DESC LIMIT 1
+    </select>
+    <select id="selectByTimeRange" resultMap="Base">
+        SELECT * FROM sensor_reading WHERE device_id=#{deviceId} 
+        AND record_time BETWEEN #{startTime} AND #{endTime} ORDER BY record_time
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sensor_reading(device_id,temperature,humidity,light_level,pm25,co2,noise,record_time)
+        VALUES(#{deviceId},#{temperature},#{humidity},#{lightLevel},#{pm25},#{co2},#{noise},#{recordTime})
+    </insert>
+</mapper>

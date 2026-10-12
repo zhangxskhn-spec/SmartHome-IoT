@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iot.smarthome.mapper.AutomationMapper">
+    <resultMap id="Base" type="com.iot.smarthome.entity.AutomationRule">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="trigger_device_id" property="triggerDeviceId"/>
+        <result column="trigger_condition" property="triggerCondition"/>
+        <result column="action_device_id" property="actionDeviceId"/>
+        <result column="action_type" property="actionType"/>
+        <result column="enabled" property="enabled"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    <select id="selectAll" resultMap="Base">SELECT * FROM automation_rule ORDER BY id</select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO automation_rule(name,trigger_device_id,trigger_condition,action_device_id,action_type,enabled)
+        VALUES(#{name},#{triggerDeviceId},#{triggerCondition},#{actionDeviceId},#{actionType},#{enabled})
+    </insert>
+    <update id="update">
+        UPDATE automation_rule SET name=#{name},trigger_device_id=#{triggerDeviceId},trigger_condition=#{triggerCondition},
+        action_device_id=#{actionDeviceId},action_type=#{actionType},enabled=#{enabled} WHERE id=#{id}
+    </update>
+    <delete id="deleteById">DELETE FROM automation_rule WHERE id=#{id}</delete>
+    <update id="toggleEnabled">UPDATE automation_rule SET enabled = 1 - enabled WHERE id=#{id}</update>
+</mapper>

@@ -1,0 +1,18 @@
+server:
+  # 注意：不要用 SERVER_PORT，部分环境（如 IDE / 容器）会预设该变量导致端口被意外覆盖
+  port: ${SMARTHOME_PORT:8080}
+
+spring:
+  application:
+    name: smarthome-iot
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/smart_home_iot?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.iot.smarthome.entity
+  configuration:
+    map-underscore-to-camel-case: true

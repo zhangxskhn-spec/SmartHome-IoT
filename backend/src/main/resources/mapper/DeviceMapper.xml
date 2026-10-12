@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iot.smarthome.mapper.DeviceMapper">
+    <resultMap id="Base" type="com.iot.smarthome.entity.Device">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="type" property="type"/>
+        <result column="room_id" property="roomId"/>
+        <result column="model" property="model"/>
+        <result column="status" property="status"/>
+        <result column="switch_state" property="switchState"/>
+        <result column="battery" property="battery"/>
+        <result column="signal_strength" property="signalStrength"/>
+        <result column="last_online" property="lastOnline"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="room_name" property="roomName"/>
+    </resultMap>
+    
+    <sql id="baseSelect">
+        SELECT d.*, r.name AS room_name FROM device d LEFT JOIN room r ON d.room_id = r.id
+    </sql>
+    
+    <select id="selectAll" resultMap="Base"><include refid="baseSelect"/> ORDER BY d.room_id, d.id</select>
+    <select id="selectById" resultMap="Base"><include refid="baseSelect"/> WHERE d.id=#{id}</select>
+    <select id="selectByRoomId" resultMap="Base"><include refid="baseSelect"/> WHERE d.room_id=#{roomId} ORDER BY d.id</select>
+    <select id="selectByType" resultMap="Base"><include refid="baseSelect"/> WHERE d.type=#{type} ORDER BY d.id</select>
+    
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO device(name,type,room_id,model,status,switch_state,battery,signal_strength,last_online)
+        VALUES(#{name},#{type},#{roomId},#{model},#{status},#{switchState},#{battery},#{signalStrength},#{lastOnline})
+    </insert>
+    <update id="update">
+        UPDATE device SET name=#{name},type=#{type},room_id=#{roomId},model=#{model},
+        status=#{status},switch_state=#{switchState},battery=#{battery},signal_strength=#{signalStrength} WHERE id=#{id}
+    </update>
+    <delete id="deleteById">DELETE FROM device WHERE id=#{id}</delete>
+    <update id="updateSwitch">UPDATE device SET switch_state=#{state} WHERE id=#{id}</update>
+    <update id="updateStatus">UPDATE device SET status=#{status} WHERE id=#{id}</update>
+    
+    <select id="selectStats" resultType="map">
+        SELECT COUNT(*) AS total,
+               SUM(CASE WHEN status=1 THEN 1 ELSE 0 END) AS online,
+               SUM(CASE WHEN status=0 THEN 1 ELSE 0 END) AS offline,
+               SUM(CASE WHEN switch_state=1 THEN 1 ELSE 0 END) AS active
+        FROM device
+    </select>
+</mapper>
